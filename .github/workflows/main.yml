@@ -6,13 +6,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build with Buildozer
-      uses: ArtemSBulgakov/buildozer-action@v1
-      id: buildozer
+      uses: kivy/buildozer-action@master
       with:
-        command: buildozer android debug
+        buildozer_version: master
+      id: buildozer
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: package
-        path: ${{ steps.buildozer.outputs.filename }}
+        path: bin/*.apk
         
