@@ -1,5 +1,6 @@
 name: Build APK
 on: push
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,23 +18,23 @@ jobs:
           mkdir -p ~/.android/sdk
           export ANDROID_HOME=$HOME/.android/sdk
           
-          # Téléchargement des outils Android officiels
+          # Téléchargement et installation des outils de ligne de commande
           wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
           unzip commandlinetools-linux-11076708_latest.zip -d cmdline-tools
           mkdir -p $ANDROID_HOME/cmdline-tools/latest
           mv cmdline-tools/cmdline-tools/* $ANDROID_HOME/cmdline-tools/latest/
           
-          # Acceptation automatique des licences
+          # Acceptation automatique des licences Android
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
           
-          # Installation des composants nécessaires
+          # Installation des composants requis (SDK Platform et Build-Tools)
           $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.1"
-          
+
       - name: Build APK
         env:
           ANDROID_HOME: /home/runner/.android/sdk
         run: |
-          # On définit les variables pour que Buildozer utilise notre SDK installé
+          # Utilisation de buildozer avec le chemin du SDK défini
           buildozer --verbose android debug
 
       - name: Upload APK
