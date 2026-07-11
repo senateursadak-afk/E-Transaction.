@@ -1,4 +1,14 @@
 [app]
+[app]
+# (str) Title of your application
+title = MonApplication
+# (str) Package name
+package.name = monapplication
+# (str) Package domain
+package.domain = org.test
+# (str) Source code where the main.py live
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
 
 # (str) Title of your application
 title = MonApplication
