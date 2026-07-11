@@ -12,16 +12,12 @@ jobs:
           sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
           pip3 install --user --upgrade buildozer
           
-      - name: Accept Android Licenses
-        run: |
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          # Cette commande force l'acceptation des licences
-          yes | sdkmanager --licenses || echo "Licences acceptées"
-          
       - name: Build with Buildozer
         run: |
-          # On ajoute --verbose pour mieux voir ce qui se passe
+          # Cette commande force l'acceptation de toutes les licences Android
+          mkdir -p ~/.android && touch ~/.android/repositories.cfg
+          export ANDROID_HOME=/home/runner/.buildozer/android/platform/android-sdk
+          # On lance la compilation
           buildozer --verbose android debug
         
       - name: Upload artifacts
