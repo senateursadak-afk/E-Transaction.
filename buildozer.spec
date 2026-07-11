@@ -1,5 +1,4 @@
 [app]
-[app]
 # (str) Title of your application
 title = MonApplication
 # (str) Package name
