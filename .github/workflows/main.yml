@@ -6,10 +6,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build with Buildozer
-      uses: kivy/buildozer-action@master
+      uses: yogg/buildozer-action@master
+      id: buildozer
       with:
         buildozer_version: master
-      id: buildozer
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
