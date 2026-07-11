@@ -1,16 +1,6 @@
 [app]
 # (str) Title of your application
 title = MonApplication
-# (str) Package name
-package.name = monapplication
-# (str) Package domain
-package.domain = org.test
-# (str) Source code where the main.py live
-source.dir = .
-source.include_exts = py,png,jpg,kv,atlas
-
-# (str) Title of your application
-title = MonApplication
 
 # (str) Package name
 package.name = monapplication
@@ -19,10 +9,13 @@ package.name = monapplication
 package.domain = org.test
 
 # (str) Source code where the main.py live
+source.dir = .
+
+# (list) Source files to include
 source.include_exts = py,png,jpg,kv,atlas
 
 # (list) Application requirements
-# Ajoutez vos bibliothèques ici (ex: kivy, requests, etc.)
+# Ajoutez ici vos dépendances (ex: kivy, requests)
 requirements = python3,kivy
 
 # (str) Application versioning
@@ -45,12 +38,6 @@ android.ndk = 25b
 
 # (bool) Indicate whether the application should be fullscreen
 fullscreen = 0
-
-# (str) Presplash of the application
-# presplash.filename = %(source.dir)s/data/presplash.png
-
-# (str) Icon of the application
-# icon.filename = %(source.dir)s/data/icon.png
 
 [buildozer]
 # (int) Log level (0 = error, 1 = info, 2 = debug)
