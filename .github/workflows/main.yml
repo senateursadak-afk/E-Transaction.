@@ -6,23 +6,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install dependencies
+      - name: Install System Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
-          pip3 install --user --upgrade buildozer
           
-      - name: Build with Buildozer
+      - name: Install Buildozer and dependencies
         run: |
-          # Cette commande force l'acceptation de toutes les licences Android
-          mkdir -p ~/.android && touch ~/.android/repositories.cfg
-          export ANDROID_HOME=/home/runner/.buildozer/android/platform/android-sdk
-          # On lance la compilation
-          buildozer --verbose android debug
-        
-      - name: Upload artifacts
+          pip3 install --user --upgrade buildozer cython
+          
+      - name: Build APK
+        run: |
+          # Création du répertoire de configuration pour éviter les blocages
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          # Lancement de la compilation
+          buildozer android debug
+          
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: package
+          name: app-release
           path: bin/*.apk
           
