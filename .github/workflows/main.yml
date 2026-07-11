@@ -1,31 +1,45 @@
 name: Build APK
 on: push
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install System Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
-          
-      - name: Install Buildozer and dependencies
-        run: |
           pip3 install --user --upgrade buildozer cython
+
+      - name: Setup Android SDK
+        run: |
+          mkdir -p ~/.android/sdk
+          export ANDROID_HOME=$HOME/.android/sdk
+          
+          # Téléchargement des outils Android officiels
+          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip commandlinetools-linux-11076708_latest.zip -d cmdline-tools
+          mkdir -p $ANDROID_HOME/cmdline-tools/latest
+          mv cmdline-tools/cmdline-tools/* $ANDROID_HOME/cmdline-tools/latest/
+          
+          # Acceptation automatique des licences
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+          
+          # Installation des composants nécessaires
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.1"
           
       - name: Build APK
+        env:
+          ANDROID_HOME: /home/runner/.android/sdk
         run: |
-          # Création du répertoire de configuration pour éviter les blocages
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          # Lancement de la compilation
-          buildozer android debug
-          
+          # On définit les variables pour que Buildozer utilise notre SDK installé
+          buildozer --verbose android debug
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
+          name: package
           path: bin/*.apk
           
